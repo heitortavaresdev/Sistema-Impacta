@@ -1,4 +1,7 @@
 # 🌱 Sistema Impacta
+Aluno: Heitor Queiroga Tavares
+Docente: Samara Sonale Santos Sampaio
+Competência: Programar em linguagem orientada a objetos avançada
 
 ### Gestão de Ações Socioambientais
 
