@@ -11,6 +11,9 @@ Projeto desenvolvido como parte da **1ª Fase da disciplina Programar em Linguag
 ## 👨‍💻 Informações do Projeto
 
 **Aluno:** Heitor Queiroga Tavares
+
+**Docente:** Samara Sonale Sampaio Santos
+
 **Disciplina:** Programar em Linguagem Orientada a Objetos Avançada
 
 ---
