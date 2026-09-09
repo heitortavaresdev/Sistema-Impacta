@@ -1,21 +1,21 @@
 # 🌱 Sistema Impacta
-- Aluno: Heitor Queiroga Tavares
 
-- Docente: Samara Sonale Santos Sampaio
+- Heitor Queiroga Tavares
 
-- Competência: Programar em linguagem orientada a objetos avançada
+## Gestão de Ações Socioambientais
 
-### Gestão de Ações Socioambientais
+O **Sistema Impacta** é um projeto desenvolvido em Java para o gerenciamento de ações socioambientais e controle da participação de voluntários.
 
-O **Sistema Impacta** é um sistema desenvolvido em **Java** para gerenciamento de ações socioambientais e controle da participação de voluntários.
+O projeto foi desenvolvido como parte da **1ª Fase da disciplina Programar em Linguagem Orientada a Objetos Avançada**, com foco na aplicação de conceitos de Programação Orientada a Objetos.
 
-O projeto foi desenvolvido como parte da **1ª Fase da disciplina de Programação Orientada a Objetos**, com foco na aplicação dos principais conceitos de **POO**.
+**Aluno:** Heitor Queiroga Tavares
+**Docente:** Samara Sonale Santos Sampaio
 
 ---
 
 ## 🎯 Objetivo
 
-O sistema tem como objetivo permitir o gerenciamento de:
+O sistema tem como objetivo permitir o cadastro e gerenciamento de:
 
 * 👤 Voluntários
 * 🌱 Ações de plantio
@@ -33,25 +33,25 @@ Sistema-Impacta/
 └── projeto/
     └── java/
         ├── Acao.java
-        ├── Plantio.java
-        ├── Mutirao.java
-        ├── Oficina.java
-        ├── Voluntario.java
-        ├── Impacta.java
         ├── AcaoLotadaException.java
         ├── EmailDuplicadoException.java
+        ├── Impacta.java
+        ├── Mutirao.java
+        ├── Oficina.java
+        ├── Plantio.java
+        ├── Voluntario.java
         └── VoluntarioJaInscritoException.java
 ```
 
 ---
 
-## 📚 Classes
+## 📚 Classes do Sistema
 
 ### `Acao`
 
-Classe abstrata que serve como base para os diferentes tipos de ações do sistema.
+Classe **abstrata** que representa uma ação socioambiental.
 
-Contém informações comuns como:
+Possui informações comuns às ações:
 
 * ID
 * Título
@@ -60,7 +60,9 @@ Contém informações comuns como:
 * Número máximo de participantes
 * Lista de voluntários
 
-Também define o método de cálculo da pontuação.
+Também possui o método abstrato `calcularPontuacao()`, que é implementado de forma diferente por cada tipo de ação.
+
+---
 
 ### `Plantio`
 
@@ -72,6 +74,8 @@ A pontuação é calculada de acordo com a quantidade de mudas:
 5 + (2 × quantidade de mudas)
 ```
 
+---
+
 ### `Mutirao`
 
 Representa uma ação de mutirão.
@@ -82,21 +86,25 @@ A pontuação é calculada de acordo com a duração:
 4 × duração em horas
 ```
 
+---
+
 ### `Oficina`
 
 Representa uma ação de oficina.
 
-A pontuação considera a duração e a presença de kit de materiais:
+A pontuação considera a duração da atividade e a existência de um kit de materiais.
 
 ```text
 3 × duração em horas + bônus do kit
 ```
 
+---
+
 ### `Voluntario`
 
-Representa os participantes do sistema.
+Representa um participante do sistema.
 
-Armazena informações como:
+Armazena:
 
 * Nome
 * E-mail
@@ -104,110 +112,128 @@ Armazena informações como:
 * Quantidade de ações realizadas
 * Pontuação acumulada
 
+---
+
 ### `Impacta`
 
 É a principal classe de gerenciamento do sistema.
 
-É responsável por funcionalidades como:
+É responsável por:
 
-* Cadastro de voluntários
-* Cadastro de ações
-* Busca de voluntários
-* Busca de ações
-* Inscrição em ações
-* Atualização da pontuação
-* Listagem dos voluntários
+* Cadastrar voluntários
+* Cadastrar ações
+* Buscar voluntários
+* Buscar ações
+* Inscrever voluntários
+* Atualizar pontuação
+* Listar voluntários por pontuação
 
-### Exceções personalizadas
-
-O sistema possui exceções específicas para situações inválidas:
-
-| Exceção                         | Situação                               |
-| ------------------------------- | -------------------------------------- |
-| `EmailDuplicadoException`       | E-mail já cadastrado                   |
-| `AcaoLotadaException`           | Ação atingiu o limite de participantes |
-| `VoluntarioJaInscritoException` | Voluntário já está inscrito na ação    |
+A classe também controla a geração dos IDs das ações.
 
 ---
 
-## 🧠 Conceitos de POO utilizados
+## ⚠️ Exceções Personalizadas
 
-O projeto aplica conceitos fundamentais de **Programação Orientada a Objetos**:
+### `EmailDuplicadoException`
+
+Utilizada quando é tentado cadastrar um voluntário utilizando um e-mail que já está cadastrado.
+
+### `AcaoLotadaException`
+
+Utilizada quando uma ação já atingiu o número máximo de participantes.
+
+### `VoluntarioJaInscritoException`
+
+Utilizada quando um voluntário tenta se inscrever novamente em uma ação da qual já participa.
+
+---
+
+## 🧠 Conceitos de POO
+
+O projeto utiliza diversos conceitos de Programação Orientada a Objetos.
 
 ### Encapsulamento
 
-Os atributos das classes são protegidos utilizando `private`, com acesso controlado através de métodos.
-
-### Herança
-
-As classes `Plantio`, `Mutirao` e `Oficina` herdam características de `Acao`.
-
-```java
-public class Plantio extends Acao
-```
+Os atributos das classes são definidos como `private`, sendo acessados através de métodos.
 
 ### Abstração
 
-`Acao` é uma classe abstrata que define características e comportamentos comuns às ações.
+A classe `Acao` é abstrata e concentra as características comuns aos diferentes tipos de ações.
+
+### Herança
+
+As classes:
 
 ```java
-public abstract class Acao
+Plantio
+Mutirao
+Oficina
+```
+
+herdam de:
+
+```java
+Acao
 ```
 
 ### Polimorfismo
 
-O método `calcularPontuacao()` possui comportamentos diferentes dependendo do tipo de ação.
+Cada tipo de ação possui sua própria implementação do método:
 
-### Sobrescrita de métodos
+```java
+calcularPontuacao()
+```
 
-As classes filhas utilizam `@Override` para implementar seus próprios comportamentos.
+### Sobrescrita
+
+As classes filhas sobrescrevem métodos da classe `Acao` utilizando `@Override`.
 
 ---
 
-## 🔄 Funcionamento básico
+## 🔄 Funcionamento
 
-O fluxo principal do sistema pode ser representado da seguinte forma:
+O funcionamento básico do sistema segue o fluxo:
 
 ```text
 Cadastro de voluntário
-          ↓
+        ↓
 Cadastro de ação
-          ↓
+        ↓
 Escolha da ação
-          ↓
+        ↓
 Inscrição do voluntário
-          ↓
+        ↓
 Verificação das regras
-          ↓
+        ↓
 Participação registrada
-          ↓
+        ↓
 Pontuação calculada
-          ↓
-Pontuação do voluntário atualizada
+        ↓
+Pontuação atualizada
 ```
 
-Durante a inscrição, o sistema verifica se:
+Durante uma inscrição, o sistema verifica:
 
-* O voluntário existe;
-* A ação existe;
-* O voluntário já está inscrito;
-* A ação atingiu o limite de participantes.
+1. Se o voluntário existe;
+2. Se a ação existe;
+3. Se o voluntário já está inscrito;
+4. Se a ação ainda possui vagas.
 
 ---
 
-## ☕ Tecnologias
+## 🛠️ Tecnologias
 
-* **Java**
+* Java
 * Programação Orientada a Objetos
 * `ArrayList`
 * `LocalDateTime`
-* Exceções personalizadas
 * `Comparator`
+* Exceções personalizadas
 
 ---
 
-## 👨‍💻 Projeto
+## 🎓 Projeto Acadêmico
 
-Projeto acadêmico desenvolvido para a **1ª Fase de Programação Orientada a Objetos**.
+Projeto desenvolvido para a **1ª Fase da disciplina Programar em Linguagem Orientada a Objetos Avançada**.
 
-**Sistema Impacta — Gestão de Ações Socioambientais** 🌱
+**Sistema Impacta — Gestão de Ações Socioambientais 🌱**
