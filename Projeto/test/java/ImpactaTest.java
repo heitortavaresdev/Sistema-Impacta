@@ -10,277 +10,342 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ImpactaTest {
     private Impacta impacta;
-    // Cria um novo sistema antes de cada teste
     @BeforeEach
     public void setUp() {
         impacta = new Impacta();
     }
-    // Testa se o e-mail duplicado gera uma exceção
     @Test
-    void cadastrarEmailDuplicadoTeste() {
-        impacta.cadastrarVoluntario("Gabriel", "gabriel@email.com", "789");
-        assertThrows(EmailDuplicadoException.class, () -> {
-            impacta.cadastrarVoluntario("Rafael", "gabriel@email.com", "654");
-        });
-    }
-    @Test
-    void cadastrarVoluntarioSucessoTeste() {
+    void cadastrarVoluntarioTeste() {
         assertTrue(
                 impacta.cadastrarVoluntario(
-                        "Mariana",
-                        "mariana@email.com",
-                        "456"
+                        "Lucas",
+                        "lucas@email.com",
+                        "101"
                 )
         );
+    }
+    @Test
+    void cadastrarEmailDuplicadoTeste() {
+        impacta.cadastrarVoluntario(
+                "Lucas",
+                "lucas@email.com",
+                "101"
+        );
+        assertThrows(
+                EmailDuplicadoException.class,
+                () -> impacta.cadastrarVoluntario(
+                        "Bruno",
+                        "lucas@email.com",
+                        "202"
+                )
+        );
+    }
+    @Test
+    void exibirVoluntarioTeste() {
+        impacta.cadastrarVoluntario(
+                "Amanda",
+                "amanda@email.com",
+                "303"
+        );
+        assertEquals(
+                "Amanda - amanda@email.com - 303 - Ações: 0 - Pontuação: 0",
+                impacta.exibirVoluntario("amanda@email.com")
+        );
+    }
+    @Test
+    void cadastrarPlantioTeste() {
+        int id = impacta.cadastrarPlantio(
+                "Plantio Comunitario",
+                "Plantio de mudas",
+                LocalDateTime.now().toString(),
+                10,
+                5
+        );
+        assertEquals(1, id);
+    }
+    @Test
+    void pontuacaoPlantioTeste() {
+        Plantio plantio = new Plantio(
+                1,
+                "Plantio Verde",
+                "Plantio de arvores",
+                LocalDateTime.now(),
+                10,
+                5
+        );
+        assertEquals(5, plantio.getQtdMudas());
+        assertEquals(15, plantio.calcularPontuacao());
+    }
+    @Test
+    void cadastrarMutiraoTeste() {
+        int id = impacta.cadastrarMutirao(
+                "Mutirao Ambiental",
+                "Limpeza de uma praca",
+                LocalDateTime.now().toString(),
+                8,
+                4
+        );
+        assertEquals(1, id);
+    }
+    @Test
+    void pontuacaoMutiraoTeste() {
+        Mutirao mutirao = new Mutirao(
+                1,
+                "Mutirao Verde",
+                "Limpeza ambiental",
+                LocalDateTime.now(),
+                10,
+                4
+        );
+        assertEquals(4, mutirao.getDuracaoHoras());
+        assertEquals(16, mutirao.calcularPontuacao());
+    }
+    @Test
+    void cadastrarOficinaTeste() {
+        int id = impacta.cadastrarOficina(
+                "Oficina Sustentavel",
+                "Atividade sobre reciclagem",
+                LocalDateTime.now().toString(),
+                10,
+                3,
+                true
+        );
+        assertEquals(1, id);
+    }
+    @Test
+    void pontuacaoOficinaComKitTeste() {
+        Oficina oficina = new Oficina(
+                1,
+                "Oficina Verde",
+                "Reciclagem de materiais",
+                LocalDateTime.now(),
+                10,
+                3,
+                true
+        );
+        assertEquals(3, oficina.getDuracaoHoras());
+        assertTrue(oficina.isKitMaterial());
+        assertEquals(19, oficina.calcularPontuacao());
+    }
+    @Test
+    void pontuacaoOficinaSemKitTeste() {
+        Oficina oficina = new Oficina(
+                1,
+                "Educacao Ambiental",
+                "Palestra sobre sustentabilidade",
+                LocalDateTime.now(),
+                10,
+                3,
+                false
+        );
+        assertEquals(3, oficina.getDuracaoHoras());
+        assertFalse(oficina.isKitMaterial());
+        assertEquals(9, oficina.calcularPontuacao());
     }
     @Test
     void inscreverVoluntarioTeste() {
         impacta.cadastrarVoluntario(
                 "Pedro",
                 "pedro@email.com",
-                "987"
+                "404"
         );
-        int idAcao = impacta.cadastrarPlantio(
-                "Plantio Comunitário",
-                "Plantio de árvores no bairro",
+        int id = impacta.cadastrarPlantio(
+                "Plantio Local",
+                "Plantio de mudas",
                 LocalDateTime.now().toString(),
-                8,
-                6
+                5,
+                4
         );
         assertTrue(
                 impacta.inscreverVoluntario(
                         "pedro@email.com",
-                        idAcao
+                        id
+                )
+        );
+        assertEquals(
+                "Pedro - pedro@email.com - 404 - Ações: 1 - Pontuação: 13",
+                impacta.exibirVoluntario("pedro@email.com")
+        );
+    }
+    @Test
+    void voluntarioNaoEncontradoTeste() {
+        int id = impacta.cadastrarPlantio(
+                "Plantio",
+                "Plantio comunitario",
+                LocalDateTime.now().toString(),
+                5,
+                2
+        );
+        assertFalse(
+                impacta.inscreverVoluntario(
+                        "naoexiste@email.com",
+                        id
                 )
         );
     }
     @Test
-    void cadastrarPlantioSucessoTeste() {
-        int id = impacta.cadastrarPlantio(
-                "Árvores para a Comunidade",
-                "Plantio de mudas nativas",
-                LocalDateTime.now().toString(),
-                6,
-                5
-        );
-        assertEquals(1, id);
-    }
-    // Testa os dados e a pontuação do plantio
-    @Test
-    void cadastrarPlantioComResultadoCorretoTeste() {
-        Plantio plantio = new Plantio(
-                8,
-                "Projeto Verde",
-                "Recuperação de uma área degradada",
-                LocalDateTime.now(),
-                12,
-                9
-        );
-        assertEquals("Projeto Verde", plantio.getTitulo());
-        assertEquals(
-                "Recuperação de uma área degradada",
-                plantio.getDescricao()
-        );
-        assertEquals(9, plantio.getQtdMudas());
-        assertEquals(23, plantio.calcularPontuacao());
-    }
-    @Test
-    void cadastrarMutiraoSucessoTeste() {
-        int id = impacta.cadastrarMutirao(
-                "Mutirão de Limpeza",
-                "Limpeza de uma praça pública",
-                LocalDateTime.now().toString(),
-                4,
-                3
-        );
-        assertEquals(1, id);
-        int id2 = impacta.cadastrarMutirao(
-                "Reciclagem no Bairro",
-                "Coleta de materiais recicláveis",
-                LocalDateTime.now().toString(),
-                7,
-                5
-        );
-        assertEquals(2, id2);
-    }
-    // Testa os dados e a pontuação do mutirão
-    @Test
-    void cadastrarMutiraoComResultadoCorretoTeste() {
-        Mutirao mutirao = new Mutirao(
-                4,
-                "Ação Recicla",
-                "Separação de materiais recicláveis",
-                LocalDateTime.now(),
-                15,
-                3
-        );
-        assertEquals("Ação Recicla", mutirao.getTitulo());
-        assertEquals(
-                "Separação de materiais recicláveis",
-                mutirao.getDescricao()
-        );
-        assertEquals(3, mutirao.getDuracaoHoras());
-        assertEquals(12, mutirao.calcularPontuacao());
-    }
-    @Test
-    void cadastrarOficinaComResultadoCorretoComKitTeste() {
-        Oficina oficina = new Oficina(
-                6,
-                "Oficina Sustentável",
-                "Produção de materiais reutilizáveis",
-                LocalDateTime.now(),
-                10,
-                2,
-                true
-        );
-        assertEquals("Oficina Sustentável", oficina.getTitulo());
-        assertEquals(2, oficina.getDuracaoHoras());
-        assertTrue(oficina.isKitMaterial());
-        assertEquals(16, oficina.calcularPontuacao());
-    }
-    @Test
-    void cadastrarOficinaComResultadoCorretoSemKitTeste() {
-        Oficina oficina = new Oficina(
-                9,
-                "Educação Ambiental",
-                "Palestra sobre sustentabilidade",
-                LocalDateTime.now(),
-                20,
-                5,
-                false
-        );
-        assertEquals("Educação Ambiental", oficina.getTitulo());
-        assertEquals(5, oficina.getDuracaoHoras());
-        assertFalse(oficina.isKitMaterial());
-        assertEquals(15, oficina.calcularPontuacao());
-    }
-    @Test
-    void exibirVoluntarioTeste() {
+    void acaoNaoEncontradaTeste() {
         impacta.cadastrarVoluntario(
-                "Juliana",
-                "juliana@email.com",
-                "321"
+                "Rafael",
+                "rafael@email.com",
+                "505"
         );
-        assertEquals(
-                "Juliana - juliana@email.com - 321 - Ações: 0 - Pontuação: 0",
-                impacta.exibirVoluntario("juliana@email.com")
+        assertFalse(
+                impacta.inscreverVoluntario(
+                        "rafael@email.com",
+                        999
+                )
         );
     }
-    // Testa se os voluntários são listados por pontuação
     @Test
-    void listarVoluntariosOrdenadoPorPontuacaoTeste() {
+    void voluntarioJaInscritoTeste() {
+        impacta.cadastrarVoluntario(
+                "Carla",
+                "carla@email.com",
+                "606"
+        );
+        int id = impacta.cadastrarPlantio(
+                "Plantio Repetido",
+                "Plantio ambiental",
+                LocalDateTime.now().toString(),
+                5,
+                3
+        );
+        impacta.inscreverVoluntario(
+                "carla@email.com",
+                id
+        );
+        assertThrows(
+                VoluntarioJaInscritoException.class,
+                () -> impacta.inscreverVoluntario(
+                        "carla@email.com",
+                        id
+                )
+        );
+    }
+    @Test
+    void acaoLotadaTeste() {
         impacta.cadastrarVoluntario(
                 "Felipe",
                 "felipe@email.com",
-                "111"
+                "707"
         );
         impacta.cadastrarVoluntario(
-                "Camila",
-                "camila@email.com",
-                "222"
+                "Julia",
+                "julia@email.com",
+                "808"
         );
-        impacta.cadastrarVoluntario(
-                "Diego",
-                "diego@email.com",
-                "333"
-        );
-        int idAcao1 = impacta.cadastrarPlantio(
-                "Grande Plantio",
-                "Plantio de várias mudas",
+        int id = impacta.cadastrarPlantio(
+                "Plantio Limitado",
+                "Acao com uma vaga",
                 LocalDateTime.now().toString(),
-                10,
-                8
-        );
-        int idAcao2 = impacta.cadastrarPlantio(
-                "Pequeno Plantio",
-                "Plantio de poucas mudas",
-                LocalDateTime.now().toString(),
-                10,
+                1,
                 2
         );
         impacta.inscreverVoluntario(
                 "felipe@email.com",
-                idAcao2
+                id
+        );
+        assertThrows(
+                AcaoLotadaException.class,
+                () -> impacta.inscreverVoluntario(
+                        "julia@email.com",
+                        id
+                )
+        );
+    }
+    @Test
+    void listarVoluntariosPorPontuacaoTeste() {
+        impacta.cadastrarVoluntario(
+                "Carlos",
+                "carlos@email.com",
+                "111"
+        );
+        impacta.cadastrarVoluntario(
+                "Ana",
+                "ana@email.com",
+                "222"
+        );
+        impacta.cadastrarVoluntario(
+                "Bruno",
+                "bruno@email.com",
+                "333"
+        );
+        int plantioMaior = impacta.cadastrarPlantio(
+                "Plantio Grande",
+                "Plantio de muitas mudas",
+                LocalDateTime.now().toString(),
+                5,
+                8
+        );
+        int plantioMenor = impacta.cadastrarPlantio(
+                "Plantio Pequeno",
+                "Plantio de poucas mudas",
+                LocalDateTime.now().toString(),
+                5,
+                2
         );
         impacta.inscreverVoluntario(
-                "camila@email.com",
-                idAcao1
+                "carlos@email.com",
+                plantioMenor
+        );
+        impacta.inscreverVoluntario(
+                "ana@email.com",
+                plantioMaior
         );
         String[] resultado = impacta.listarVoluntarios();
         String[] esperado = {
-                "Camila - camila@email.com - 222 - Ações: 1 - Pontuação: 21",
-                "Felipe - felipe@email.com - 111 - Ações: 1 - Pontuação: 9",
-                "Diego - diego@email.com - 333 - Ações: 0 - Pontuação: 0"
+                "Ana - ana@email.com - 222 - Ações: 1 - Pontuação: 21",
+                "Carlos - carlos@email.com - 111 - Ações: 1 - Pontuação: 9",
+                "Bruno - bruno@email.com - 333 - Ações: 0 - Pontuação: 0"
         };
         assertArrayEquals(esperado, resultado);
     }
-    // Testa se uma ação lotada gera uma exceção
     @Test
-    void inscreverVoluntarioEmAcaoLotadaDeveLancarExcecao() {
-        impacta.cadastrarVoluntario(
-                "Larissa",
-                "larissa@email.com",
-                "555"
-        );
-        impacta.cadastrarVoluntario(
-                "Renato",
-                "renato@email.com",
-                "666"
-        );
-        int idAcao = impacta.cadastrarPlantio(
-                "Plantio Limitado",
-                "Ação com poucas vagas",
-                LocalDateTime.now().toString(),
-                1,
-                4
-        );
-        impacta.inscreverVoluntario(
-                "larissa@email.com",
-                idAcao
-        );
-        assertThrows(AcaoLotadaException.class, () -> {
-            impacta.inscreverVoluntario(
-                    "renato@email.com",
-                    idAcao
-            );
-        });
-    }
-    // Testa se o mesmo voluntário não pode se inscrever duas vezes
-    @Test
-    void inscreverMesmoVoluntarioDuasVezesDeveLancarExcecao() {
-        impacta.cadastrarVoluntario(
-                "Beatriz",
-                "beatriz@email.com",
-                "777"
-        );
-        int idAcao = impacta.cadastrarPlantio(
-                "Plantio Repetido",
-                "Ação de preservação ambiental",
-                LocalDateTime.now().toString(),
+    void detalhesAcaoTeste() {
+        int id = impacta.cadastrarPlantio(
+                "Acao Verde",
+                "Plantio de arvores",
+                "2026-09-09T10:00:00",
                 10,
-                3
+                5
         );
-        impacta.inscreverVoluntario(
-                "beatriz@email.com",
-                idAcao
+        assertNotNull(
+                impacta.exibirDetalhesAcao(id)
         );
-        assertThrows(VoluntarioJaInscritoException.class, () -> {
-            impacta.inscreverVoluntario(
-                    "beatriz@email.com",
-                    idAcao
-            );
-        });
     }
     @Test
-    void cadastrarOficinaSucessoTeste() {
-        int id = impacta.cadastrarOficina(
-                "Oficina de Reciclagem",
-                "Criação de objetos com materiais recicláveis",
-                LocalDateTime.now().toString(),
-                8,
-                4,
-                true
+    void detalhesAcaoInexistenteTeste() {
+        assertNull(
+                impacta.exibirDetalhesAcao(999)
         );
-        assertEquals(1, id);
+    }
+    @Test
+    void idsDasAcoesDevemSerSequenciaisTeste() {
+        int primeiro = impacta.cadastrarPlantio(
+                "Primeiro Plantio",
+                "Primeira acao",
+                LocalDateTime.now().toString(),
+                5,
+                2
+        );
+        int segundo = impacta.cadastrarMutirao(
+                "Segundo Mutirao",
+                "Segunda acao",
+                LocalDateTime.now().toString(),
+                5,
+                2
+        );
+        int terceiro = impacta.cadastrarOficina(
+                "Terceira Oficina",
+                "Terceira acao",
+                LocalDateTime.now().toString(),
+                5,
+                2,
+                false
+        );
+        assertEquals(1, primeiro);
+        assertEquals(2, segundo);
+        assertEquals(3, terceiro);
     }
 }
