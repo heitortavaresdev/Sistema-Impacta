@@ -1,7 +1,5 @@
 # 🌱 Sistema Impacta
 
-- Heitor Queiroga Tavares
-
 ### Gestão de Ações Socioambientais
 
 Sistema desenvolvido em **Java** para gerenciamento de ações socioambientais e controle da participação de voluntários.
@@ -13,7 +11,6 @@ Projeto desenvolvido como parte da **1ª Fase da disciplina Programar em Linguag
 ## 👨‍💻 Informações do Projeto
 
 **Aluno:** Heitor Queiroga Tavares
-**Docente:** Samara Sonale Santos Sampaio
 **Disciplina:** Programar em Linguagem Orientada a Objetos Avançada
 
 ---
@@ -40,21 +37,24 @@ O sistema permite:
 ```text
 Sistema-Impacta/
 └── projeto/
-    └── java/
-        ├── Acao.java
-        ├── Plantio.java
-        ├── Mutirao.java
-        ├── Oficina.java
-        ├── Voluntario.java
-        ├── Impacta.java
-        ├── AcaoLotadaException.java
-        ├── EmailDuplicadoException.java
-        └── VoluntarioJaInscritoException.java
+    ├── java/
+    │   ├── Acao.java
+    │   ├── Plantio.java
+    │   ├── Mutirao.java
+    │   ├── Oficina.java
+    │   ├── Voluntario.java
+    │   ├── Impacta.java
+    │   ├── AcaoLotadaException.java
+    │   ├── EmailDuplicadoException.java
+    │   └── VoluntarioJaInscritoException.java
+    │
+    └── test/
+        └── ImpactaTest.java
 ```
 
 ---
 
-## 📚 Classes
+## 📚 Classes do Sistema
 
 ### `Acao`
 
@@ -95,7 +95,7 @@ A pontuação é calculada de acordo com a duração da ação:
 
 Representa uma ação de oficina.
 
-A pontuação considera a duração da oficina e o bônus relacionado ao kit de materiais.
+A pontuação considera a duração da oficina e o bônus relacionado ao kit de materiais:
 
 ```text
 3 × duração em horas + bônus do kit
@@ -115,7 +115,7 @@ Armazena informações como:
 
 ### `Impacta`
 
-É a classe responsável pelo gerenciamento principal do sistema.
+É a classe principal responsável pelo gerenciamento das funcionalidades do sistema.
 
 Entre suas funções estão:
 
@@ -129,6 +129,54 @@ Entre suas funções estão:
 
 ---
 
+## 🧪 Classe de Testes
+
+### `ImpactaTest`
+
+A classe `ImpactaTest` é responsável por testar as principais funcionalidades da classe `Impacta`.
+
+Os testes verificam se o sistema apresenta o comportamento esperado em diferentes situações.
+
+Entre os testes realizados estão:
+
+* Cadastro de voluntários;
+* Cadastro com e-mail duplicado;
+* Busca de voluntários;
+* Cadastro de ações;
+* Busca de ações;
+* Inscrição de voluntários;
+* Tentativa de inscrição duplicada;
+* Ação lotada;
+* Cálculo de pontuação;
+* Atualização da pontuação dos voluntários;
+* Listagem dos voluntários.
+
+A classe utiliza **JUnit 5** para criação e execução dos testes.
+
+Exemplo da estrutura utilizada:
+
+```java
+@BeforeEach
+public void setUp() {
+    impacta = new Impacta();
+}
+```
+
+O `@BeforeEach` cria uma nova instância do sistema antes de cada teste, garantindo que os testes sejam executados de forma independente.
+
+Os testes utilizam métodos como:
+
+```java
+assertTrue()
+assertFalse()
+assertEquals()
+assertThrows()
+```
+
+para verificar se os resultados obtidos estão de acordo com o comportamento esperado.
+
+---
+
 ## ⚠️ Exceções
 
 O sistema possui exceções personalizadas para tratar situações inválidas.
@@ -139,11 +187,13 @@ O sistema possui exceções personalizadas para tratar situações inválidas.
 | `AcaoLotadaException`           | Ação atingiu o limite de participantes |
 | `VoluntarioJaInscritoException` | Voluntário já está inscrito na ação    |
 
+Essas situações também são verificadas pelos testes da classe `ImpactaTest`.
+
 ---
 
 ## 🧠 Conceitos de Orientação a Objetos
 
-O projeto utiliza os principais conceitos de Programação Orientada a Objetos.
+O projeto utiliza conceitos fundamentais de Programação Orientada a Objetos.
 
 ### Encapsulamento
 
@@ -209,6 +259,7 @@ Durante a inscrição, o sistema verifica:
 ## ☕ Tecnologias Utilizadas
 
 * **Java**
+* **JUnit 5**
 * Programação Orientada a Objetos
 * `ArrayList`
 * `LocalDateTime`
