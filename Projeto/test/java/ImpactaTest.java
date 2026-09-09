@@ -1,4 +1,3 @@
-```java
 package Projeto.test.java;
 
 import Projeto.projeto.java.*;
