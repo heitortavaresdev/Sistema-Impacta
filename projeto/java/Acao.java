@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public abstract class Acao {
-    private int id; private String titulo;
+    private int id; 
+    private String titulo;
     private String descricao;
     private LocalDateTime data;
     private int maxParticipantes;
