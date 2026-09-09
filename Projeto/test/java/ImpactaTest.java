@@ -1,3 +1,4 @@
+```java
 package Projeto.test.java;
 
 import Projeto.projeto.java.*;
@@ -10,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ImpactaTest {
     private Impacta impacta;
+    // Cria um novo sistema antes de cada teste
     @BeforeEach
     public void setUp() {
         impacta = new Impacta();
     }
+    // Testa se o e-mail duplicado gera uma exceção
     @Test
     void cadastrarEmailDuplicadoTeste() {
         impacta.cadastrarVoluntario("Gabriel", "gabriel@email.com", "789");
@@ -63,6 +66,7 @@ public class ImpactaTest {
         );
         assertEquals(1, id);
     }
+    // Testa os dados e a pontuação do plantio
     @Test
     void cadastrarPlantioComResultadoCorretoTeste() {
         Plantio plantio = new Plantio(
@@ -100,6 +104,7 @@ public class ImpactaTest {
         );
         assertEquals(2, id2);
     }
+    // Testa os dados e a pontuação do mutirão
     @Test
     void cadastrarMutiraoComResultadoCorretoTeste() {
         Mutirao mutirao = new Mutirao(
@@ -162,6 +167,7 @@ public class ImpactaTest {
                 impacta.exibirVoluntario("juliana@email.com")
         );
     }
+    // Testa se os voluntários são listados por pontuação
     @Test
     void listarVoluntariosOrdenadoPorPontuacaoTeste() {
         impacta.cadastrarVoluntario(
@@ -209,6 +215,7 @@ public class ImpactaTest {
         };
         assertArrayEquals(esperado, resultado);
     }
+    // Testa se uma ação lotada gera uma exceção
     @Test
     void inscreverVoluntarioEmAcaoLotadaDeveLancarExcecao() {
         impacta.cadastrarVoluntario(
@@ -239,6 +246,7 @@ public class ImpactaTest {
             );
         });
     }
+    // Testa se o mesmo voluntário não pode se inscrever duas vezes
     @Test
     void inscreverMesmoVoluntarioDuasVezesDeveLancarExcecao() {
         impacta.cadastrarVoluntario(
